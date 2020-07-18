@@ -3,10 +3,14 @@ pipeline {
     stages {
         stage('Test') {
             agent {
-                docker { image 'php:7.4-alpine' }
+                dockerFile {
+                     filename 'test.Dockerfile'
+                     dir 'build'
+                }
             }
             steps {
-                sh 'build/test.sh'
+                sh 'composer install'
+                sh 'vendor/bin/phpunit'
             }
         }
     }
